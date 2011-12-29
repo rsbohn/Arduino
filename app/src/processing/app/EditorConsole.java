@@ -22,6 +22,7 @@
 */
 
 package processing.app;
+import static processing.app.I18n._;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -88,7 +89,9 @@ public class EditorConsole extends JScrollPane {
     Color bgColor    = Theme.getColor("console.color");
     Color fgColorOut = Theme.getColor("console.output.color");
     Color fgColorErr = Theme.getColor("console.error.color");
-    Font font        = Theme.getFont("console.font");
+    Font consoleFont = Theme.getFont("console.font");
+    Font editorFont = Preferences.getFont("editor.font");
+    Font font = new Font(consoleFont.getName(), consoleFont.getStyle(), editorFont.getSize());
 
     stdStyle = new SimpleAttributeSet();
     StyleConstants.setForeground(stdStyle, fgColorOut);
@@ -143,9 +146,8 @@ public class EditorConsole extends JScrollPane {
           stderrFile = new FileOutputStream(errFile);
         }
       } catch (IOException e) {
-        Base.showWarning("Console Error",
-                         "A problem occurred while trying to open the\n" +
-                         "files used to store the console output.", e);
+        Base.showWarning(_("Console Error"),
+                         _("A problem occurred while trying to open the\nfiles used to store the console output."), e);
       }
       consoleOut = new PrintStream(new EditorConsoleStream(false));
       consoleErr = new PrintStream(new EditorConsoleStream(true));
